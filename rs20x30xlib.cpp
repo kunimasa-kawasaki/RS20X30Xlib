@@ -47,11 +47,11 @@ int RS20X30XDeviceIo::commandSend(unsigned char *sbuff, unsigned int ssize) {
 }
 
 int RS20X30XDeviceIo::checksum(unsigned char *send, unsigned char len) {
-	int sum = 0;
-	for(int nth=2; nth < len; nth++){
-		sum ^= send[nth];
-	}
-	return sum;
+    int sum = 0;
+    for(int nth=2; nth < len; nth++){
+	sum ^= send[nth];
+    }
+    return sum;
 }
 
 int RS20X30XDeviceIo::writePram(unsigned char id, unsigned char flag, unsigned char address, unsigned char len, unsigned char count, unsigned char *data) {
@@ -64,10 +64,10 @@ int RS20X30XDeviceIo::writePram(unsigned char id, unsigned char flag, unsigned c
     send[n] = PACKET_HEADER_1;
     send[++n] = PACKET_HEADER_2;
     send[++n] = id;
-	send[++n] = flag;
-	send[++n] = address;
-	send[++n] = len;
-	send[++n] = count;
+    send[++n] = flag;
+    send[++n] = address;
+    send[++n] = len;
+    send[++n] = count;
     for (int i = 0; i < len*count; i++)
         send[++n] = data[i];
     sum = checksum(send,len*count+7);
@@ -86,14 +86,14 @@ int RS20X30XDeviceIo::readPram(unsigned char id, unsigned char flag, unsigned ch
     send[n] = PACKET_HEADER_1;
     send[++n] = PACKET_HEADER_2;
     send[++n] = id;
-	send[++n] = flag;
-	send[++n] = address;
-	send[++n] = len;
-	send[++n] = 0x00; // Cnt
+    send[++n] = flag;
+    send[++n] = address;
+    send[++n] = len;
+    send[++n] = 0x00; // Cnt
     sum = checksum(send, 7);
     send[++n] = sum;
 
-	// on return packet
+    // on return packet
     rtn = commandSend(send, 8, rdata, rsize);
 
     return rtn;
@@ -422,10 +422,10 @@ float RS20X30XDeviceIo::getVoltage(unsigned char id){
 // ROM
 // --- info
 int RS20X30XDeviceIo::setServoID(unsigned char id, unsigned char new_id ) {
-	return writePram(id, FLAG_RETURN_NON, ROM_SERVO_ID, 1, 1, &new_id);
+    return writePram(id, FLAG_RETURN_NON, ROM_SERVO_ID, 1, 1, &new_id);
 }
 int RS20X30XDeviceIo::setReverse(unsigned char id, unsigned char direction ) {
-	return writePram(id, FLAG_RETURN_NON, ROM_REVERSE, 1, 1, &direction);
+    return writePram(id, FLAG_RETURN_NON, ROM_REVERSE, 1, 1, &direction);
 }
 int RS20X30XDeviceIo::setReverseCW(unsigned char id) {
     return setReverse(id, REVERSE_CW);
@@ -434,37 +434,37 @@ int RS20X30XDeviceIo::setReverseCCW(unsigned char id) {
     return setReverse(id, REVERSE_CCW);
 }
 int RS20X30XDeviceIo::setBaudRate(unsigned char id, unsigned char bps ) {
-	return writePram(id, FLAG_RETURN_NON, ROM_BAUDRATE, 1, 1, &bps);
+    return writePram(id, FLAG_RETURN_NON, ROM_BAUDRATE, 1, 1, &bps);
 }
 int RS20X30XDeviceIo::setBaudRate9600(unsigned char id) {
-	return setBaudRate(id, BAUDRATE_9600);
+    return setBaudRate(id, BAUDRATE_9600);
 }
 int RS20X30XDeviceIo::setBaudRate14400(unsigned char id) {
-	return setBaudRate(id, BAUDRATE_14400);
+    return setBaudRate(id, BAUDRATE_14400);
 }
 int RS20X30XDeviceIo::setBaudRate19200(unsigned char id) {
-	return setBaudRate(id, BAUDRATE_19200);
+    return setBaudRate(id, BAUDRATE_19200);
 }
 int RS20X30XDeviceIo::setBaudRate28800(unsigned char id) {
-	return setBaudRate(id, BAUDRATE_28800);
+    return setBaudRate(id, BAUDRATE_28800);
 }
 int RS20X30XDeviceIo::setBaudRate38400(unsigned char id) {
-	return setBaudRate(id, BAUDRATE_38400);
+    return setBaudRate(id, BAUDRATE_38400);
 }
 int RS20X30XDeviceIo::setBaudRate57600(unsigned char id) {
-	return setBaudRate(id, BAUDRATE_57600);
+    return setBaudRate(id, BAUDRATE_57600);
 }
 int RS20X30XDeviceIo::setBaudRate76800(unsigned char id) {
-	return setBaudRate(id, BAUDRATE_76800);
+    return setBaudRate(id, BAUDRATE_76800);
 }
 int RS20X30XDeviceIo::setBaudRate115200(unsigned char id) {
-	return setBaudRate(id, BAUDRATE_115200);
+    return setBaudRate(id, BAUDRATE_115200);
 }
 int RS20X30XDeviceIo::setBaudRate153600(unsigned char id) {
-	return setBaudRate(id, BAUDRATE_153600);
+    return setBaudRate(id, BAUDRATE_153600);
 }
 int RS20X30XDeviceIo::setBaudRate230400(unsigned char id) {
-	return setBaudRate(id, BAUDRATE_230400);
+    return setBaudRate(id, BAUDRATE_230400);
 }
 int RS20X30XDeviceIo::setReturnDelay(unsigned char id, unsigned int time ) {
     unsigned int default_time = 100; // [us]
@@ -476,12 +476,12 @@ int RS20X30XDeviceIo::setReturnDelay(unsigned char id, unsigned int time ) {
     data[0] = (unsigned char) time & 0xFF;
     data[1] = (unsigned char) (time >> 8) & 0xFF;
 
-	return writePram(id, FLAG_RETURN_NON, ROM_RETURN_DELAY, 2, 1, data);
+    return writePram(id, FLAG_RETURN_NON, ROM_RETURN_DELAY, 2, 1, data);
 }
 int RS20X30XDeviceIo::setAngleLimit(unsigned char id, short angle) {
     if(angle < MOVE_LIMIT_MIN) angle = MOVE_LIMIT_MIN;
-	if(angle > MOVE_LIMIT_MAX) angle = MOVE_LIMIT_MAX;
-	angle = angle * 10;
+    if(angle > MOVE_LIMIT_MAX) angle = MOVE_LIMIT_MAX;
+    angle = angle * 10;
 
     bool CCW_flag = false;
     if(angle < 0) {
@@ -489,9 +489,9 @@ int RS20X30XDeviceIo::setAngleLimit(unsigned char id, short angle) {
         angle = angle * -1;
     }
 
-	unsigned char data[2];
-	data[0] = (unsigned char) angle & 0xFF;
-	data[1] = (unsigned char) (angle >> 8) & 0xFF;
+    unsigned char data[2];
+    data[0] = (unsigned char) angle & 0xFF;
+    data[1] = (unsigned char) (angle >> 8) & 0xFF;
 
     if(CCW_flag == true){  // when angle is -, CCW
         return writePram(id, FLAG_RETURN_NON, ROM_CCW_ANGLELIMIT_L, 2, 1, data);
@@ -503,16 +503,16 @@ int RS20X30XDeviceIo::setAngleLimit(unsigned char id, short angle) {
 
 // --- pwm
 int RS20X30XDeviceIo::setTorqueInSilence(unsigned char id, unsigned char mode) {
-	return writePram(id, FLAG_RETURN_NON, ROM_TORQUE_IN_SILENCE, 1, 1, &mode);
+    return writePram(id, FLAG_RETURN_NON, ROM_TORQUE_IN_SILENCE, 1, 1, &mode);
 }
 int RS20X30XDeviceIo::setTorqueInSilenceFree(unsigned char id) {
-	return setTorqueInSilence(id, TORQUE_IN_SILENCE_FREE);
+    return setTorqueInSilence(id, TORQUE_IN_SILENCE_FREE);
 }
 int RS20X30XDeviceIo::setTorqueInSilenceKeep(unsigned char id) {
-	return setTorqueInSilence(id, TORQUE_IN_SILENCE_KEEP);
+    return setTorqueInSilence(id, TORQUE_IN_SILENCE_KEEP);
 }
 int RS20X30XDeviceIo::setTorqueInSilenceBrake(unsigned char id) {
-	return setTorqueInSilence(id, TORQUE_IN_SILENCE_BRAKE);
+    return setTorqueInSilence(id, TORQUE_IN_SILENCE_BRAKE);
 }
 int RS20X30XDeviceIo::setWarmUpTime(unsigned char id, unsigned int time) {
     if(time > MOVE_LIMIT_WARMUPTIME_MAX) time = MOVE_LIMIT_WARMUPTIME_MAX;
@@ -522,7 +522,7 @@ int RS20X30XDeviceIo::setWarmUpTime(unsigned char id, unsigned int time) {
     data[0] = (unsigned char) time & 0xFF;
     data[1] = (unsigned char) (time >> 8) & 0xFF;
 
-	return writePram(id, FLAG_RETURN_NON, ROM_WARM_UP_TIME, 2, 1, data);
+    return writePram(id, FLAG_RETURN_NON, ROM_WARM_UP_TIME, 2, 1, data);
 }
 
 // --- compliance
@@ -543,68 +543,68 @@ int RS20X30XDeviceIo::setCompliance( unsigned char id, short cw_m_angle, short c
     data[4] = (unsigned char) p_percent & 0xFF;
     data[5] = (unsigned char) (p_percent >> 8) & 0xFF;
 
-	return writePram(id, FLAG_RETURN_NON, ROM_CW_COMPLIANCE_MARGIN, 6, 1, data);
+    return writePram(id, FLAG_RETURN_NON, ROM_CW_COMPLIANCE_MARGIN, 6, 1, data);
 }
 int RS20X30XDeviceIo::setCWComplianceMargin(unsigned char id, short angle) {
     if(angle > MOVE_LIMIT_COMPLIANCE_MARGIN) angle = MOVE_LIMIT_COMPLIANCE_MARGIN;
     unsigned char data = angle * 10;
 
-	return writePram(id, FLAG_RETURN_NON, ROM_CW_COMPLIANCE_MARGIN, 1, 1, &data);
+    return writePram(id, FLAG_RETURN_NON, ROM_CW_COMPLIANCE_MARGIN, 1, 1, &data);
 }
 int RS20X30XDeviceIo::setCCWComplianceMargin(unsigned char id, short angle) {
     if(angle > MOVE_LIMIT_COMPLIANCE_MARGIN) angle = MOVE_LIMIT_COMPLIANCE_MARGIN;
     unsigned char data = angle * 10;
 
-	return writePram(id, FLAG_RETURN_NON, ROM_CCW_COMPLIANCE_MARGIN, 1, 1, &data);
+    return writePram(id, FLAG_RETURN_NON, ROM_CCW_COMPLIANCE_MARGIN, 1, 1, &data);
 }
 int RS20X30XDeviceIo::setCCWComplianceSlope(unsigned char id, unsigned char angle) {
-	return writePram(id, FLAG_RETURN_NON, ROM_CW_COMPLIANCE_SLOPE, 1, 1, &angle);
+    return writePram(id, FLAG_RETURN_NON, ROM_CW_COMPLIANCE_SLOPE, 1, 1, &angle);
 }
 int RS20X30XDeviceIo::setCWComplianceSlope(unsigned char id, unsigned char angle) {
-	return writePram(id, FLAG_RETURN_NON, ROM_CW_COMPLIANCE_SLOPE, 1, 1, &angle);
+    return writePram(id, FLAG_RETURN_NON, ROM_CW_COMPLIANCE_SLOPE, 1, 1, &angle);
 }
 int RS20X30XDeviceIo::setPunch(unsigned char id, unsigned char percent) {
     percent = percent / 100 * 255;
     unsigned char data[2];
     data[0] = (unsigned char) percent & 0xFF;
     data[1] = (unsigned char) (percent >> 8) & 0xFF;
-	return writePram(id, FLAG_RETURN_NON, ROM_PUNCH_L, 2, 1, data);
+    return writePram(id, FLAG_RETURN_NON, ROM_PUNCH_L, 2, 1, data);
 }
 
 // --- goal position
 int RS20X30XDeviceIo::setGoalPosition(unsigned char id, short angle) {
-	if(angle < MOVE_LIMIT_MIN) angle = MOVE_LIMIT_MIN;
-	if(angle > MOVE_LIMIT_MAX) angle = MOVE_LIMIT_MAX;
-	angle = angle * 10;
+    if(angle < MOVE_LIMIT_MIN) angle = MOVE_LIMIT_MIN;
+    if(angle > MOVE_LIMIT_MAX) angle = MOVE_LIMIT_MAX;
+    angle = angle * 10;
 
-	unsigned char data[2];
-	data[0] = (unsigned char) angle & 0xFF;
-	data[1] = (unsigned char) (angle >> 8) & 0xFF;
+    unsigned char data[2];
+    data[0] = (unsigned char) angle & 0xFF;
+    data[1] = (unsigned char) (angle >> 8) & 0xFF;
 
-	return writePram(id, FLAG_RETURN_NON, RAM_GOAL_POSITION_L, 2, 1, data);
+    return writePram(id, FLAG_RETURN_NON, RAM_GOAL_POSITION_L, 2, 1, data);
 }
 
 int RS20X30XDeviceIo::setGoalPositionInTime(unsigned char id, short angle, unsigned int time) {
-	if(angle < MOVE_LIMIT_MIN) angle = MOVE_LIMIT_MIN;
-	if(angle > MOVE_LIMIT_MAX) angle = MOVE_LIMIT_MAX;
-	angle = angle * 10;
+    if(angle < MOVE_LIMIT_MIN) angle = MOVE_LIMIT_MIN;
+    if(angle > MOVE_LIMIT_MAX) angle = MOVE_LIMIT_MAX;
+    angle = angle * 10;
     time = time / 10;
 
-	unsigned char data[4];
-	data[0] = (unsigned char) angle & 0xFF;
-	data[1] = (unsigned char) (angle >> 8) & 0xFF;
+    unsigned char data[4];
+    data[0] = (unsigned char) angle & 0xFF;
+    data[1] = (unsigned char) (angle >> 8) & 0xFF;
     data[2] = (unsigned char) time & 0xff;
     data[3] = (unsigned char) (time >> 8) & 0xff;
 
-	return writePram(id, FLAG_RETURN_NON, RAM_GOAL_POSITION_L, 4, 1, data);
+    return writePram(id, FLAG_RETURN_NON, RAM_GOAL_POSITION_L, 4, 1, data);
 }
 
 // --- torque
 int RS20X30XDeviceIo::setMaxTorque(unsigned char id, unsigned char percent) {
-	return writePram(id, FLAG_RETURN_NON, RAM_MAX_TORQUE, 1, 1, &percent);
+    return writePram(id, FLAG_RETURN_NON, RAM_MAX_TORQUE, 1, 1, &percent);
 }
 int RS20X30XDeviceIo::setTorqueMode(unsigned char id, unsigned char mode) {
-	return writePram(id, FLAG_RETURN_NON, RAM_TORQUE_ENABLE, 1, 1, &mode);
+    return writePram(id, FLAG_RETURN_NON, RAM_TORQUE_ENABLE, 1, 1, &mode);
 }
 int RS20X30XDeviceIo::setTorqueOff(unsigned char id) {
     return setTorqueMode(id, TORQUE_OFF);
