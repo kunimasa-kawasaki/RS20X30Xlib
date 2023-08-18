@@ -20,7 +20,7 @@ private:
     int commandSend( unsigned char *sbuf, unsigned int ssize, unsigned char *rbuff, unsigned int rsize ); //return
     int commandSend( unsigned char *sbuf, unsigned int ssize ); // no return
 
-	int checksum( unsigned char *send, unsigned char len );
+    int checksum( unsigned char *send, unsigned char len );
     int writePram( unsigned char id, unsigned char flag, unsigned char address, unsigned char len, unsigned char count, unsigned char * data );
     int readPram( unsigned char id, unsigned char flag, unsigned char address, unsigned char len, unsigned char *rdata, unsigned int rsize );
     int Buff2Status( unsigned char flag, unsigned char *rbuff );
@@ -29,13 +29,13 @@ public:
     RS20X30XDeviceIo(HardwareSerial &_serial);
     ~RS20X30XDeviceIo();
     /* --- system function --- */
-	int flushROM( unsigned char id );
+    int flushROM( unsigned char id );
     int reboot( unsigned char id );
     int initializeROM( unsigned char id );
     bool checkACK( unsigned char id );
 
-	/* --- get function --- */
-	// --- system
+    /* --- get function --- */
+    // --- system
     String getModelNumber( unsigned char id );
     String getFirmwareVersion( unsigned char id );
 
@@ -67,11 +67,11 @@ public:
     int getTorqueEnable( unsigned char id );
     int getPIDCoefficient( unsigned char id );
     // --- status
-	RS20X30X_STATUS getStatus( unsigned char id );
+    RS20X30X_STATUS getStatus( unsigned char id );
         float getPosition( unsigned char id );  //位置
-        int getTime( unsigned char id );	    //経過時間
-        int getSpeed( unsigned char id );		//速度
-        int getCurrent( unsigned char id );	    //電流
+        int getTime( unsigned char id );	//経過時間
+        int getSpeed( unsigned char id );	//速度
+        int getCurrent( unsigned char id );	//電流
         int getTemperature( unsigned char id ); //温度
         float getVoltage( unsigned char id );   //電圧
 
@@ -112,8 +112,8 @@ public:
     int setPunch( unsigned char id, unsigned char percent );              // unit of percent 1/255
 
     // --- goal position
-    int setGoalPosition( unsigned char id, short angle);                      // unit of angle [deg]
-    int setGoalPositionInTime( unsigned char id, short angle, unsigned int time);    // unit of angle [deg], time 10[ms]
+    int setGoalPosition( unsigned char id, short angle);                     		// unit of angle [deg]
+    int setGoalPositionInTime( unsigned char id, short angle, unsigned int time);     	// unit of angle [deg], time 10[ms]
 
     // --- torque
     int setMaxTorque( unsigned char id, unsigned char percent ); // unit of percent 1/100
