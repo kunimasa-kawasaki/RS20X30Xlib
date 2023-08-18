@@ -11,6 +11,7 @@ Implementation of configuration changes and value retrieval using short packets 
 ## Note
 ### Verified Items
 - ROBOT SERVO RS204MD FUTABA
+- Seeed Studio XIAO SAMD21
 - Functions used in the sample code
   
 *Please note that items other than those listed above have not been tested for functionality.
