@@ -1,4 +1,4 @@
-# Arduino library for Futaba RS20X30X
+# Arduino library for Futaba ROBOT SERVO RS20X30X
 
 ## Summary
 Arduino Library for Futaba Corporation Robot Servo.  
